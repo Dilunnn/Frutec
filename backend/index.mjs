@@ -10,8 +10,8 @@ app.use(express.json());
 const conexao = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '1234',
-    database: '' /*adicionar nome do banco depois*/
+    password: '1234', /*Antes de iniciar o banco verifique a senha talvez senha seja diferente*/
+    database: 'frutec'
 });
 
 conexao.connect((er) => {
@@ -23,7 +23,7 @@ conexao.connect((er) => {
 });
 
 app.get('/', (req, res) => {
-    res.send('Olá! Bem-vindo ao nosso back-end');
+    res.send('Olá! Bem-vindo');
 });
 
 
