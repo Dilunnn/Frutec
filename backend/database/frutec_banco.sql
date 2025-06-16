@@ -1,4 +1,3 @@
-
 USE Frutec;
 
 -- Tabela de usuários
@@ -41,7 +40,7 @@ CREATE TABLE pedidos (
 
 -- Tabela de personalização de pedidos (1:1 com pedidos)
 CREATE TABLE personalizacao_pedido (
-    id_Pedido INT PRIMARY KEY,
+    id_Pedido INT PRIMARY KEY ,
     tamanho_copo ENUM('Pequeno', 'Médio', 'Grande') NOT NULL,
     camada_1 ENUM('Leite Ninho', 'Leite Condensado', 'Creme de Le', 'Granola', 'Paçoca', 'Chocolate Granulado', 'Nutella', 'Mel', 'Doce de Leite', 'Leite em Pó'),
     camada_2 ENUM('Leite Ninho', 'Leite Condensado', 'Creme de Le', 'Granola', 'Paçoca', 'Chocolate Granulado', 'Nutella', 'Mel', 'Doce de Leite', 'Leite em Pó'),
@@ -132,17 +131,16 @@ INSERT INTO personalizacao_pedido (
 INSERT INTO pedidos (id_Usuario, metodo_pagamento) VALUES (21, 'Pix');
 
 -- Botamos o id do usuario que está fazendo o pedido e a forma de pagamento
-SELECT LAST_INSERT_ID() AS id_Pedido; -- depois pegamos o id do pedido
+SET @novo_id_pedido = LAST_INSERT_ID();-- depois pegamos o id do pedido
 
 -- então nós adicionamos a personalização do pedido:
+
 INSERT INTO personalizacao_pedido (
-    id_Pedido, tamanho_copo,
-    camada_1, camada_2, camada_3,
-    fruta_1, fruta_2,
-    complemento_1, complemento_2, complemento_3, complemento_4, complemento_5
+    id_Pedido, tamanho_copo, camada_1, camada_2, camada_3,
+    fruta_1, fruta_2, complemento_1, complemento_2, complemento_3, complemento_4, complemento_5
 ) VALUES (
-    4, 'Grande',
-    'Leite Ninho', 'Granola', 'Nutella',
-    'Morango', 'Banana',
-    'Castanha de Caju', 'Amendoim Torrado', 'Coco Ralado', 'Chantilly', 'Aveia'
+    @novo_id_pedido, 'Pequeno',
+    'Paçoca', 'Leite Condensado', 'Granola',
+    'Manga', 'Acerola',
+    'Tapioca', 'Chantilly', 'Cereal Matinal', 'Aveia', 'Coco Ralado'
 );
