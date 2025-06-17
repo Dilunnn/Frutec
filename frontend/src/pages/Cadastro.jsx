@@ -10,7 +10,7 @@ const Cadastro = () => {
 
     async function cadastrarUsuario(nome, sobrenome, telefone, email, senha) {
         try {
-            const response = await fetch('', {
+            const response = await fetch('http://localhost:3000/CadastrarUsuario', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -43,11 +43,11 @@ const Cadastro = () => {
 
     return (
         <>
-            <style jsx>{`
-        body {
-            background-color: #391942;
-        }
-        `}</style>
+            <style>{`
+  body {
+    background-color: #391942;
+  }
+`}</style>
 
             <div className="container mt-5">
                 <div className="row justify-content-center">
@@ -60,12 +60,12 @@ const Cadastro = () => {
                                     <input type="text" className="form-control" id="nome" placeholder="Digite seu nome" onChange={e => setNome(e.target.value)}/>
                                 </div>
                                 <div className="mb-3">
-                                    <label htmlFor="nome" className="form-label">Sobrenome</label>
-                                    <input type="text" className="form-control" id="nome" placeholder="Digite seu sobrenome" onChange={e => setSobrenome(e.target.value)}/>
+                                    <label htmlFor="sobrenome" className="form-label">Sobrenome</label>
+                                    <input type="text" className="form-control" id="sobrenome" placeholder="Digite seu sobrenome" onChange={e => setSobrenome(e.target.value)}/>
                                 </div>
                                 <div className="mb-3">
-                                    <label htmlFor="nome" className="form-label">Telefone</label>
-                                    <input type="text" className="form-control" id="nome" placeholder="Digite seu telefone" onChange={e => setTelefone(e.target.value)}/>
+                                    <label htmlFor="telefone" className="form-label">Telefone</label>
+                                    <input type="text" className="form-control" id="telefone" placeholder="Digite seu telefone" onChange={e => setTelefone(e.target.value)}/>
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="email" className="form-label">Email</label>

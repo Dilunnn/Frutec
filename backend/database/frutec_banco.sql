@@ -9,6 +9,7 @@ CREATE TABLE usuarios (
     Email VARCHAR(50) NOT NULL UNIQUE,
     Endereco VARCHAR(255),
     Tipo ENUM('Cliente', 'ADM') NOT NULL,
+    Senha VARCHAR(255) NOT NULL,
     data_cadastro DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -56,28 +57,28 @@ CREATE TABLE personalizacao_pedido (
 );
 
 -- Inserção de usuários
-INSERT INTO usuarios (Nome, Sobrenome, Telefone, Email, Endereco, Tipo) VALUES
-('Ana', 'Silva', '8599991001', 'ana1@gmail.com', 'Rua A, 101', 'Cliente'),
-('Bruno', 'Costa', '8599991002', 'bruno2@gmail.com', 'Rua B, 102', 'Cliente'),
-('Carla', 'Souza', '8599991003', 'carla3@gmail.com', 'Rua C, 103', 'ADM'),
-('Daniel', 'Lima', '8599991004', 'daniel4@gmail.com', 'Rua D, 104', 'Cliente'),
-('Eduarda', 'Melo', '8599991005', 'eduarda5@gmail.com', 'Rua E, 105', 'Cliente'),
-('Felipe', 'Alves', '8599991006', 'felipe6@gmail.com', 'Rua F, 106', 'Cliente'),
-('Giovana', 'Castro', '8599991007', 'giovana7@gmail.com', 'Rua G, 107', 'ADM'),
-('Henrique', 'Martins', '8599991008', 'henrique8@gmail.com', 'Rua H, 108', 'Cliente'),
-('Isabela', 'Ferreira', '8599991009', 'isabela9@gmail.com', 'Rua I, 109', 'Cliente'),
-('João', 'Pereira', '8599991010', 'joao10@gmail.com', 'Rua J, 110', 'Cliente'),
-('Karen', 'Rodrigues', '8599991011', 'karen11@gmail.com', 'Rua K, 111', 'Cliente'),
-('Lucas', 'Monteiro', '8599991012', 'lucas12@gmail.com', 'Rua L, 112', 'Cliente'),
-('Mariana', 'Teixeira', '8599991013', 'mariana13@gmail.com', 'Rua M, 113', 'ADM'),
-('Nicolas', 'Freitas', '8599991014', 'nicolas14@gmail.com', 'Rua N, 114', 'Cliente'),
-('Olívia', 'Barros', '8599991015', 'olivia15@gmail.com', 'Rua O, 115', 'Cliente'),
-('Pedro', 'Ribeiro', '8599991016', 'pedro16@gmail.com', 'Rua P, 116', 'Cliente'),
-('Quésia', 'Gomes', '8599991017', 'quesia17@gmail.com', 'Rua Q, 117', 'Cliente'),
-('Rafael', 'Dantas', '8599991018', 'rafael18@gmail.com', 'Rua R, 118', 'Cliente'),
-('Sara', 'Araújo', '8599991019', 'sara19@gmail.com', 'Rua S, 119', 'ADM'),
-('Tiago', 'Nascimento', '8599991020', 'tiago20@gmail.com', 'Rua T, 120', 'Cliente'),
-('Rodrigo', 'Viana', '854002-8922', 'rodrigoviana2203@gmail.com', 'Rua dos bobos, 123', 'ADM');
+INSERT INTO usuarios (Nome, Sobrenome, Telefone, Email, Endereco, Tipo, Senha) VALUES
+('Ana', 'Silva', '8599991001', 'ana1@gmail.com', 'Rua A, 101', 'Cliente', 'senha1'),
+('Bruno', 'Costa', '8599991002', 'bruno2@gmail.com', 'Rua B, 102', 'Cliente', 'senha2'),
+('Carla', 'Souza', '8599991003', 'carla3@gmail.com', 'Rua C, 103', 'ADM', 'senha3'),
+('Daniel', 'Lima', '8599991004', 'daniel4@gmail.com', 'Rua D, 104', 'Cliente', 'senha4'),
+('Eduarda', 'Melo', '8599991005', 'eduarda5@gmail.com', 'Rua E, 105', 'Cliente', 'senha5'),
+('Felipe', 'Alves', '8599991006', 'felipe6@gmail.com', 'Rua F, 106', 'Cliente', 'senha6'),
+('Giovana', 'Castro', '8599991007', 'giovana7@gmail.com', 'Rua G, 107', 'ADM', 'senha7'),
+('Henrique', 'Martins', '8599991008', 'henrique8@gmail.com', 'Rua H, 108', 'Cliente', 'senha8'),
+('Isabela', 'Ferreira', '8599991009', 'isabela9@gmail.com', 'Rua I, 109', 'Cliente', 'senha9'),
+('João', 'Pereira', '8599991010', 'joao10@gmail.com', 'Rua J, 110', 'Cliente', 'senha10'),
+('Karen', 'Rodrigues', '8599991011', 'karen11@gmail.com', 'Rua K, 111', 'Cliente', 'senha11'),
+('Lucas', 'Monteiro', '8599991012', 'lucas12@gmail.com', 'Rua L, 112', 'Cliente', 'senha12'),
+('Mariana', 'Teixeira', '8599991013', 'mariana13@gmail.com', 'Rua M, 113', 'ADM', 'senha13'),
+('Nicolas', 'Freitas', '8599991014', 'nicolas14@gmail.com', 'Rua N, 114', 'Cliente', 'senha14'),
+('Olívia', 'Barros', '8599991015', 'olivia15@gmail.com', 'Rua O, 115', 'Cliente', 'senha15'),
+('Pedro', 'Ribeiro', '8599991016', 'pedro16@gmail.com', 'Rua P, 116', 'Cliente', 'senha16'),
+('Quésia', 'Gomes', '8599991017', 'quesia17@gmail.com', 'Rua Q, 117', 'Cliente', 'senha17'),
+('Rafael', 'Dantas', '8599991018', 'rafael18@gmail.com', 'Rua R, 118', 'Cliente', 'senha18'),
+('Sara', 'Araújo', '8599991019', 'sara19@gmail.com', 'Rua S, 119', 'ADM', 'senha19'),
+('Tiago', 'Nascimento', '8599991020', 'tiago20@gmail.com', 'Rua T, 120', 'Cliente', 'senha20'),
+('Rodrigo', 'Viana', '854002-8922', 'rodrigoviana2203@gmail.com', 'Rua dos bobos, 123', 'ADM', 'senha21');
 
 -- Ingredientes
 INSERT INTO ingredientes (Nome_Ingrediente, Descricao, preco) VALUES

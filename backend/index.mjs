@@ -1,9 +1,11 @@
 import express from 'express';
 import mysql from 'mysql2';
+import cors from 'cors';
 
 const app = express();
 const port = 3000;
 
+app.use(cors())
 app.use(express.json());
 
 
@@ -24,6 +26,25 @@ conexao.connect((er) => {
 
 app.get('/', (req, res) => {
     res.send('Olá! Bem-vindo');
+});
+
+app.post('/CadastrarUsuario', (req, res) => {
+    const { nome, sobrenome, telefone, email, senha } = req.body;
+
+    if (!nome || !sobrenome || !telefone || !email || !senha) {
+        return res.json({ mensagem: 'Todos os campos são obrigatórios.' });
+    }
+
+    const sql = `INSERT INTO usuarios (Nome, Sobrenome, Telefone, Email, Senha)
+                 VALUES ('${nome}', '${sobrenome}', '${telefone}', '${email}', '${senha}')`;
+
+    conexao.query(sql, (err, resultado) => {
+        if (err) {
+            res.json({ mensagem: `Erro ao cadastrar usuário: ${err}` });
+        } else {
+            res.json({ mensagem: 'Usuário cadastrado com sucesso!', id: resultado.insertId });
+        }
+    });
 });
 
 app.get('/PerfilUsuario/:id', (req,res) => {
