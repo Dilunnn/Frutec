@@ -10,7 +10,7 @@ app.use(express.json());
 const conexao = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '1234', /*Antes de iniciar o banco verifique a senha talvez senha seja diferente*/
+    password: '12345', /*Antes de iniciar o banco verifique a senha talvez senha seja diferente*/
     database: 'frutec'
 });
 
@@ -92,8 +92,27 @@ app.get('/VerEstoque', (req,res) => {
 // depois adicionar qual foi o pedido do usuario.
 app.get('/TodosOsPedidos', (req,res) => {
     let sql = `
-        SELECT  pedidos.id_Pedido, usuarios.Nome, usuarios.Sobrenome, usuarios.Telefone, pedidos.metodo_pagamento, pedidos.data_pedido FROM pedidos
-        JOIN usuarios ON pedidos.id_Usuario = usuarios.id_Usuario;
+    SELECT 
+    pedidos.id_Pedido,
+    usuarios.Nome,
+    usuarios.Sobrenome,
+    usuarios.Telefone,
+    personalizacao_pedido.tamanho_copo,
+    personalizacao_pedido.camada_1,
+    personalizacao_pedido.camada_2,
+    personalizacao_pedido.camada_3,
+    personalizacao_pedido.fruta_1,
+    personalizacao_pedido.fruta_2,
+    personalizacao_pedido.complemento_1,
+    personalizacao_pedido.complemento_2,
+    personalizacao_pedido.complemento_3,
+    personalizacao_pedido.complemento_4,
+    personalizacao_pedido.complemento_5,
+    pedidos.metodo_pagamento,
+    pedidos.data_pedido
+    FROM pedidos
+    JOIN usuarios ON pedidos.id_Usuario = usuarios.id_Usuario
+    JOIN personalizacao_pedido ON pedidos.id_Pedido = personalizacao_pedido.id_Pedido;
     `
     conexao.query(sql,(err,resultado) => {
         if (err) {
