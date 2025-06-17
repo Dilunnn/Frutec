@@ -40,6 +40,20 @@ app.get('/PerfilUsuario/:id', (req,res) => {
     })
 })
 
+app.get('/ingredientes', (req,res) => {
+    let sql = `SELECT estoque.id_Estoque, ingredientes.Nome_Ingrediente AS nome_ingrediente, estoque.quantidade,
+    estoque.data_atualizacao
+    FROM estoque
+    JOIN ingredientes ON estoque.id_Ingrediente = ingredientes.id_Ingrediente;`
+    conexao.query(sql, (err, resultado) => {
+        if (err) {
+            res.send(`Erro: ${err}`)
+        } else {
+            res.json(resultado)            
+        }
+    })
+})
+
 app.get('/Vercarrinho/:id', (req, res) => {
     let id = req.params.id;
     let sql = `
@@ -89,7 +103,7 @@ app.get('/VerEstoque', (req,res) => {
     });
 })
 
-// depois adicionar qual foi o pedido do usuario.
+
 app.get('/TodosOsPedidos', (req,res) => {
     let sql = `
     SELECT 
