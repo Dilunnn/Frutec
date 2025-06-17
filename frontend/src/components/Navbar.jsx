@@ -10,7 +10,7 @@ const Navbar = () => {
                 rel="stylesheet"
             />
 
-            <style jsx>{`
+            <style>{`
         .navbar-purple {
         background-color: #391942 !important;
         }
@@ -29,7 +29,7 @@ const Navbar = () => {
                 <div className="container">
                     <a className="navbar-brand fw-bold d-flex align-items-center" href="#">
                         <img
-                            src=""
+                            src="#"
                             alt=""
                             style={{ height: '40px', marginRight: '10px' }}
                         />

@@ -9,7 +9,7 @@ const Footer = () => {
                 rel="stylesheet"
             />
 
-            <style jsx>{`
+            <style>{`
         .footer-black {
         background-color: #000000;
         color: white;
