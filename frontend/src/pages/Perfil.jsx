@@ -10,6 +10,10 @@ const Perfil = () => {
     endereco: ''
   })
 
+  function Apagarconta() {
+   confirm('Tem certeza que deseja apagar a conta?') 
+  }
+
   function alterarsenha() {
   const senhaAtual = prompt('Digite sua senha atual para poder alterar a senha:')
   
@@ -103,13 +107,19 @@ const Perfil = () => {
         <strong>Telefone:</strong> <span>{perfil.telefone}</span>
       </div>
 
-      <div style={{ marginBottom: '12px' }}>
+      <div style={{ marginBottom: '12px' }} className='d-flex justify-content-end' >
         <strong>Endereço:</strong> <span>{perfil.endereco}</span>
+        <button className="btn btn-sm ms-auto" style={{ backgroundColor: '#391942', color: 'white' }} > Alterar </button>
       </div>
 
-      <div className='d-flex justify-content-end'>
+      <div style={{ marginBottom: '12px' }} className='d-flex justify-content-end'>
         <strong>Senha:</strong> <span>*****</span>
         <button className="btn btn-sm ms-auto" style={{ backgroundColor: '#391942', color: 'white' }} onClick={alterarsenha}> Alterar </button>
+      </div>
+      <hr />
+      <div className='d-flex justify-content-between'>
+        <button className='btn btn-danger' onClick={Apagarconta}>Apagar Conta</button>
+        <button className='btn btn-sm border' style={{ backgroundColor: '#391942', color: 'white' }}>Logout</button>
       </div>
     </div>
   );
