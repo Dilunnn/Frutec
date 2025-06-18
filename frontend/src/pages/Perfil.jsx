@@ -2,23 +2,83 @@ import React, { useState, useEffect } from 'react';
 
 const Perfil = () => {
   const [perfil, setPerfil] = useState({
-    name: '',
+    nome: '',
+    sobrenome: '',
+    senha: '',
     email: '',
-    phone: '',
-  });
+    telefone: '',
+    endereco: ''
+  })
+
+  function Apagarconta() {
+   confirm('Tem certeza que deseja apagar a conta?') 
+  }
+
+  function alterarsenha() {
+  const senhaAtual = prompt('Digite sua senha atual para poder alterar a senha:')
+  
+  if (senhaAtual === perfil.senha) {
+    const novaSenha = prompt('Digite sua nova senha:')
+
+    if (!novaSenha || novaSenha.trim() === '') {
+      alert('Senha inválida.')
+      return
+    }
+
+    const confirmar = confirm('Deseja realmente alterar sua senha?')
+
+    if (!confirmar) return
+
+    const id = localStorage.getItem('idUsuario')
+
+    fetch(`http://localhost:3000/PerfilUsuario/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ senha: novaSenha })
+    })
+      .then(res => res.json())
+      .then(data => {
+        alert('Senha alterada com sucesso!')
+        setPerfil(prev => ({ ...prev, senha: novaSenha }))
+      })
+      .catch(error => {
+        console.error('Erro ao alterar a senha:', error)
+        alert('Erro ao alterar a senha.')
+      })
+
+  } else {
+    alert('Senha atual incorreta!')
+  }
+}
+
 
   useEffect(() => {
-    const fetchData = async () => {
-      const dataFromDatabase = {
-        name: 'Maria Oliveira',
-        email: 'maria.oliveira@example.com',
-        phone: '(85) 98888888',
-      };
-      setPerfil(dataFromDatabase);
-    };
+    localStorage.setItem('idUsuario', '2') // Apenas pra tesste
+    const buscarPerfil = async () => {
+      // Pegando o id do usuário do localStorage
+      const id = localStorage.getItem('idUsuario')
+      if (!id) return console.log(`Id não existe ou o usúario não logou`) /*Depois mandar o usúario para página de login */
 
-    fetchData();
-  }, []);
+      try {
+        const response = await fetch(`http://localhost:3000/PerfilUsuario/${id}`)
+        const data = await response.json()
+        setPerfil({
+          nome: data.Nome || '',
+          sobrenome: data.Sobrenome || '',
+          senha: data.Senha || '',
+          email: data.Email || '',
+          telefone: data.Telefone || '',
+          endereco: data.Endereco || ''
+        })
+      } catch (error) {
+        console.log('Erro ao buscar perfil:', error)
+      }
+    }
+
+    buscarPerfil()
+  }, [])
 
   return (
     <div style={{
@@ -36,18 +96,34 @@ const Perfil = () => {
       </h2>
 
       <div style={{ marginBottom: '12px' }}>
-        <strong>Nome:</strong> <span>{perfil.name}</span>
+        <strong>Nome:</strong> <span>{perfil.nome} {perfil.sobrenome}</span>
       </div>
 
       <div style={{ marginBottom: '12px' }}>
         <strong>Email:</strong> <span>{perfil.email}</span>
       </div>
 
-      <div>
-        <strong>Telefone:</strong> <span>{perfil.phone}</span>
+      <div style={{ marginBottom: '12px' }}>
+        <strong>Telefone:</strong> <span>{perfil.telefone}</span>
+      </div>
+
+      <div style={{ marginBottom: '12px' }} className='d-flex justify-content-end' >
+        <strong>Endereço:</strong> <span>{perfil.endereco}</span>
+        <button className="btn btn-sm ms-auto" style={{ backgroundColor: '#391942', color: 'white' }} > Alterar </button>
+      </div>
+
+      <div style={{ marginBottom: '12px' }} className='d-flex justify-content-end'>
+        <strong>Senha:</strong> <span>*****</span>
+        <button className="btn btn-sm ms-auto" style={{ backgroundColor: '#391942', color: 'white' }} onClick={alterarsenha}> Alterar </button>
+      </div>
+      <hr />
+      <div className='d-flex justify-content-between'>
+        <button className='btn btn-danger' onClick={Apagarconta}>Apagar Conta</button>
+        <button className='btn btn-sm border' style={{ backgroundColor: '#391942', color: 'white' }}>Logout</button>
       </div>
     </div>
   );
 };
 
 export default Perfil;
+
