@@ -1,27 +1,18 @@
-import { useState } from 'react'
-import './App.css'
-import Navbar from './components/Navbar'
-import Footer from './components/Footer'
-import Cadastro from './pages/Cadastro'
-import { BrowserRouter } from 'react-router-dom'
-function App() {
-  
+import './App.css';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import AppRoutes from './routes/AppRoutes'; 
 
+function App() {
   return (
     <>
-        <div>
-        <BrowserRouter>
-        
-        <Navbar/>
-
-        <Cadastro/>
-
-        <Footer/>
-
-        </BrowserRouter>
-        </div>
+      <div>
+        <Navbar />
+        <AppRoutes /> 
+        <Footer />
+      </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
