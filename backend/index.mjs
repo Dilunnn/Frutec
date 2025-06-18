@@ -1,19 +1,22 @@
 import express from 'express';
 import mysql from 'mysql2';
 import cors from 'cors';
+import dotenv from 'dotenv';
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT;
 
+dotenv.config();
 app.use(cors())
 app.use(express.json());
 
 
+
 const conexao = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '12345', /*Antes de iniciar o banco verifique a senha talvez senha seja diferente*/
-    database: 'frutec'
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
 });
 
 conexao.connect((er) => {
@@ -162,5 +165,5 @@ app.get('/TodosOsPedidos', (req,res) => {
 
 
 app.listen(port, () => {
-    console.log(`Servidor rodando em http://localhost:${port}`);
+    console.log(`Servidor rodando em http://localhost:3000`);
 });
