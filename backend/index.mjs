@@ -3,10 +3,11 @@ import mysql from 'mysql2';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
+dotenv.config();
+
 const app = express();
 const port = process.env.PORT;
 
-dotenv.config();
 app.use(cors())
 app.use(express.json());
 
@@ -165,5 +166,5 @@ app.get('/TodosOsPedidos', (req,res) => {
 
 
 app.listen(port, () => {
-    console.log(`Servidor rodando em http://localhost:3000`);
-});
+    console.log(`Servidor rodando em http://localhost:${port}`)
+})

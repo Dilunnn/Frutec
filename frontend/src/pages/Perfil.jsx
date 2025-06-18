@@ -2,23 +2,39 @@ import React, { useState, useEffect } from 'react';
 
 const Perfil = () => {
   const [perfil, setPerfil] = useState({
-    name: '',
+    nome: '',
+    sobrenome: '',
+    senha: '',
     email: '',
-    phone: '',
-  });
+    telefone: '',
+    endereco: ''
+  })
 
   useEffect(() => {
-    const fetchData = async () => {
-      const dataFromDatabase = {
-        name: 'Maria Oliveira',
-        email: 'maria.oliveira@example.com',
-        phone: '(85) 98888888',
-      };
-      setPerfil(dataFromDatabase);
-    };
+    localStorage.setItem('idUsuario', '10') // Apenas pra tesste
+    const buscarPerfil = async () => {
+      // Pegando o id do usuário do localStorage
+      const id = localStorage.getItem('idUsuario')
+      if (!id) return console.log(`Id não existe ou o usúario não logou`) /*Depois mandar o usúario para página de login */
 
-    fetchData();
-  }, []);
+      try {
+        const response = await fetch(`http://localhost:3000/PerfilUsuario/${id}`)
+        const data = await response.json()
+        setPerfil({
+          nome: data.Nome || '',
+          sobrenome: data.Sobrenome || '',
+          senha: data.Senha || '',
+          email: data.Email || '',
+          telefone: data.Telefone || '',
+          endereco: data.Endereco || ''
+        })
+      } catch (error) {
+        console.log('Erro ao buscar perfil:', error)
+      }
+    }
+
+    buscarPerfil()
+  }, [])
 
   return (
     <div style={{
@@ -36,18 +52,27 @@ const Perfil = () => {
       </h2>
 
       <div style={{ marginBottom: '12px' }}>
-        <strong>Nome:</strong> <span>{perfil.name}</span>
+        <strong>Nome:</strong> <span>{perfil.nome} {perfil.sobrenome}</span>
       </div>
 
       <div style={{ marginBottom: '12px' }}>
         <strong>Email:</strong> <span>{perfil.email}</span>
       </div>
 
+      <div style={{ marginBottom: '12px' }}>
+        <strong>Telefone:</strong> <span>{perfil.telefone}</span>
+      </div>
+
+      <div style={{ marginBottom: '12px' }}>
+        <strong>Endereço:</strong> <span>{perfil.endereco}</span>
+      </div>
+
       <div>
-        <strong>Telefone:</strong> <span>{perfil.phone}</span>
+        <strong>Senha:</strong> <span>{perfil.senha}</span>
       </div>
     </div>
   );
 };
 
 export default Perfil;
+
