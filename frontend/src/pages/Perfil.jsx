@@ -9,7 +9,11 @@ const Perfil = () => {
     telefone: '',
     endereco: ''
   })
-
+  function Logout() {
+    localStorage.clear(); // ou remova apenas o que precisa
+    window.location.href = '/login'; // ou use navigate('/login') se usar React Router
+  }
+  
   function Apagarconta() {
    confirm('Tem certeza que deseja apagar a conta?') 
   }
@@ -55,7 +59,7 @@ const Perfil = () => {
 
 
   useEffect(() => {
-    localStorage.setItem('idUsuario', '2') // Apenas pra tesste
+    localStorage.setItem('idUsuario', '23') // Apenas pra tesste
     const buscarPerfil = async () => {
       // Pegando o id do usuário do localStorage
       const id = localStorage.getItem('idUsuario')
@@ -119,7 +123,7 @@ const Perfil = () => {
       <hr />
       <div className='d-flex justify-content-between'>
         <button className='btn btn-danger' onClick={Apagarconta}>Apagar Conta</button>
-        <button className='btn btn-sm border' style={{ backgroundColor: '#391942', color: 'white' }}>Logout</button>
+        <button className='btn btn-sm border' style={{ backgroundColor: '#391942', color: 'white' }} onClick={Logout}>Logout</button>
       </div>
     </div>
   );
