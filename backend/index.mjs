@@ -64,6 +64,25 @@ app.get('/PerfilUsuario/:id', (req,res) => {
         }
     })
 })
+app.put('/PerfilUsuario/:id', (req, res) => {
+  const { id } = req.params;
+  const { senha } = req.body;
+
+  if (!senha) {
+    return res.json({ erro: 'Nova senha não fornecida.' });
+  }
+
+  const sql = `UPDATE usuarios SET Senha = '${senha}' WHERE id_Usuario = ${id}`;
+
+  conexao.query(sql, (err, resultado) => {
+    if (err) {
+      return res.json({ erro: 'Erro ao atualizar senha', detalhes: err });
+    }
+    res.json({ mensagem: 'Senha atualizada com sucesso!' });
+  });
+});
+
+
 
 app.get('/ingredientes', (req,res) => {
     let sql = `SELECT estoque.id_Estoque, ingredientes.Nome_Ingrediente AS nome_ingrediente, estoque.quantidade,

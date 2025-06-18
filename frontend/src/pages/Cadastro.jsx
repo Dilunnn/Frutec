@@ -75,7 +75,8 @@ const Cadastro = () => {
                                     <label htmlFor="senha" className="form-label">Senha</label>
                                     <input type="password" className="form-control" id="senha" placeholder="Digite sua senha" onChange={e => setSenha(e.target.value)}/>
                                 </div>
-                                <button type="submit" className="btn btn-primary w-100">Cadastrar</button>
+                                <button type="submit" style={{ backgroundColor: '#391942', color: 'white' }} className="btn btn-primary w-100">Cadastrar</button>
+                                
                             </form>
                         </div>
                     </div>

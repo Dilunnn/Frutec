@@ -10,8 +10,48 @@ const Perfil = () => {
     endereco: ''
   })
 
+  function alterarsenha() {
+  const senhaAtual = prompt('Digite sua senha atual para poder alterar a senha:')
+  
+  if (senhaAtual === perfil.senha) {
+    const novaSenha = prompt('Digite sua nova senha:')
+
+    if (!novaSenha || novaSenha.trim() === '') {
+      alert('Senha inválida.')
+      return
+    }
+
+    const confirmar = confirm('Deseja realmente alterar sua senha?')
+
+    if (!confirmar) return
+
+    const id = localStorage.getItem('idUsuario')
+
+    fetch(`http://localhost:3000/PerfilUsuario/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ senha: novaSenha })
+    })
+      .then(res => res.json())
+      .then(data => {
+        alert('Senha alterada com sucesso!')
+        setPerfil(prev => ({ ...prev, senha: novaSenha }))
+      })
+      .catch(error => {
+        console.error('Erro ao alterar a senha:', error)
+        alert('Erro ao alterar a senha.')
+      })
+
+  } else {
+    alert('Senha atual incorreta!')
+  }
+}
+
+
   useEffect(() => {
-    localStorage.setItem('idUsuario', '10') // Apenas pra tesste
+    localStorage.setItem('idUsuario', '2') // Apenas pra tesste
     const buscarPerfil = async () => {
       // Pegando o id do usuário do localStorage
       const id = localStorage.getItem('idUsuario')
@@ -67,8 +107,9 @@ const Perfil = () => {
         <strong>Endereço:</strong> <span>{perfil.endereco}</span>
       </div>
 
-      <div>
-        <strong>Senha:</strong> <span>{perfil.senha}</span>
+      <div className='d-flex justify-content-end'>
+        <strong>Senha:</strong> <span>*****</span>
+        <button className="btn btn-sm ms-auto" style={{ backgroundColor: '#391942', color: 'white' }} onClick={alterarsenha}> Alterar </button>
       </div>
     </div>
   );

@@ -10,7 +10,7 @@ import Cardapio from '../pages/Cardapio';
 export default function AppRoutes() {
   return (
     <Routes>
-      <Route path="/inicio" element={<Inicio />} />
+      <Route path="/" element={<Inicio />} />
       <Route path="/login" element={<Login />} />
       <Route path="/cadastro" element={<Cadastro />} />
       <Route path="/perfil" element={<Perfil />} />
