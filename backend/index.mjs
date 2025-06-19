@@ -49,7 +49,7 @@ app.post('/CadastrarUsuario', async (req, res) => {
      const sql = `INSERT INTO usuarios (Nome, Sobrenome, Telefone, Email, Senha)
                  VALUES ('${nome}', '${sobrenome}', '${telefone}', '${email}', '${senhaCriptografada}')`;
 
-    conexao.query(sql, [nome, sobrenome, telefone, email, senhaCriptografada], (err, resultado) => {
+    conexao.query(sql, (err, resultado) => {
       if (err) {
         return res.json({ mensagem: `Erro ao cadastrar usuário: ${err}` });
       }
@@ -73,23 +73,69 @@ app.get('/PerfilUsuario/:id', (req,res) => {
         }
     })
 })
-app.put('/PerfilUsuario/:id', (req, res) => {
-  const { id } = req.params;
-  const { senha } = req.body;
 
-  if (!senha) {
-    return res.json({ erro: 'Nova senha não fornecida.' });
+
+app.put('/PerfilUsuario/:id', async (req, res) => {
+  const { id } = req.params;
+  const { senhaAtual, senha } = req.body;
+
+  if (!senhaAtual || !senha) {
+    return res.json({ erro: 'Senha atual e nova senha devem ser fornecidas.' });
   }
 
-  const sql = `UPDATE usuarios SET Senha = '${senha}' WHERE id_Usuario = ${id}`;
+  try {
+    const sqlBusca = `SELECT Senha FROM usuarios WHERE id_Usuario = ${id}`;
+    conexao.query(sqlBusca, async (err, resultado) => {
+      if (err) return res.json({ erro: 'Erro ao buscar usuário.', detalhes: err });
 
-  conexao.query(sql, (err, resultado) => {
+      if (resultado.length === 0) {
+        return res.json({ erro: 'Usuário não encontrado.' });
+      }
+
+      const senhaHash = resultado[0].Senha;
+
+      const confere = await bcrypt.compare(senhaAtual, senhaHash);
+      if (!confere) {
+        return res.json({ erro: 'Senha atual incorreta.' });
+      }
+
+      const novaHash = await bcrypt.hash(senha, 12);
+
+      const sqlUpdate = `UPDATE usuarios SET Senha = '${novaHash}' WHERE id_Usuario = ${id}`;
+      conexao.query(sqlUpdate, (err2) => {
+        if (err2) return res.status(500).json({ erro: 'Erro ao atualizar senha.', detalhes: err2 });
+
+        res.json({ mensagem: 'Senha alterada com sucesso!' });
+      });
+    });
+  } catch (error) {
+    res.json({ erro: 'Erro interno no servidor.' });
+  }
+});
+
+
+
+
+app.put('/PerfilUsuario/endereco/:id', (req, res) => {
+  const { id } = req.params;
+  const { endereco } = req.body;
+
+  if (!endereco || endereco.trim() === '') {
+    return res.json({ erro: 'Endereço inválido.' });
+  }
+
+  const sql = `UPDATE usuarios SET Endereco = "${endereco}" WHERE id_Usuario = "${id}"`;
+  conexao.query(sql, [endereco, id], (err, resultado) => {
     if (err) {
-      return res.json({ erro: 'Erro ao atualizar senha', detalhes: err });
+      return res.json({ erro: 'Erro ao atualizar endereço', detalhes: err });
     }
-    res.json({ mensagem: 'Senha atualizada com sucesso!' });
+    if (resultado.affectedRows === 0) {
+      return res.json({ erro: 'Usuário não encontrado.' });
+    }
+    res.json({ mensagem: 'Endereço atualizado com sucesso!' });
   });
 });
+
 
 
 
