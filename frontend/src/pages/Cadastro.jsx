@@ -30,7 +30,7 @@ const Cadastro = () => {
             }
 
             const data = await response.json();
-            console.log('Cadastro realizado com sucesso:', data);
+            alert('Cadastro realizado com sucesso:');
         } catch (error) {
             console.log('Erro:', error);
         }

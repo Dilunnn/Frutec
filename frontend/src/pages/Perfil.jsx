@@ -10,59 +10,97 @@ const Perfil = () => {
     endereco: ''
   })
   function Logout() {
-    localStorage.clear(); // ou remova apenas o que precisa
-    window.location.href = '/login'; // ou use navigate('/login') se usar React Router
+    localStorage.clear(); 
+    window.location.href = '/login';
   }
   
   function Apagarconta() {
    confirm('Tem certeza que deseja apagar a conta?') 
   }
 
-  function alterarsenha() {
-  const senhaAtual = prompt('Digite sua senha atual para poder alterar a senha:')
-  
-  if (senhaAtual === perfil.senha) {
-    const novaSenha = prompt('Digite sua nova senha:')
+ 
+async function alterarsenha() {
+  const id = localStorage.getItem('token');
+  const senhaAtual = prompt('Digite sua senha atual:');
+  if (!senhaAtual || senhaAtual.trim() === '') {
+    alert('Senha atual não informada.');
+    return;
+  }
 
-    if (!novaSenha || novaSenha.trim() === '') {
-      alert('Senha inválida.')
-      return
-    }
+  const novaSenha = prompt('Digite sua nova senha:');
+  if (!novaSenha || novaSenha.trim() === '') {
+    alert('Senha inválida.');
+    return;
+  }
 
-    const confirmar = confirm('Deseja realmente alterar sua senha?')
+  if (novaSenha === senhaAtual) {
+    alert('A nova senha não pode ser igual à atual.');
+    return;
+  }
 
-    if (!confirmar) return
+  const confirmarSenha = prompt('Confirme a nova senha:');
+  if (novaSenha !== confirmarSenha) {
+    alert('As senhas não coincidem!');
+    return;
+  }
 
-    const id = localStorage.getItem('idUsuario')
+  const confirmar = confirm('Deseja realmente alterar sua senha?');
+  if (!confirmar) return;
 
-    fetch(`http://localhost:3000/PerfilUsuario/${id}`, {
+  try {
+    const resposta = await fetch(`http://localhost:3000/PerfilUsuario/${id}`, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ senha: novaSenha })
-    })
-      .then(res => res.json())
-      .then(data => {
-        alert('Senha alterada com sucesso!')
-        setPerfil(prev => ({ ...prev, senha: novaSenha }))
-      })
-      .catch(error => {
-        console.error('Erro ao alterar a senha:', error)
-        alert('Erro ao alterar a senha.')
-      })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ senhaAtual, senha: novaSenha })
+    });
 
-  } else {
-    alert('Senha atual incorreta!')
+    const dados = await resposta.json();
+
+    if (resposta.ok) {
+      alert('Senha alterada com sucesso!');
+    } else {
+      alert(`Erro: ${dados.erro}`);
+    }
+  } catch (erro) {
+    console.error('Erro ao alterar senha:', erro);
+    alert('Erro ao alterar a senha.');
   }
 }
 
 
+  function alterarendereco() {
+    const novoEndereco = prompt('Digite seu novo endereço:', perfil.endereco);
+    if (novoEndereco === null) return;
+    if (!novoEndereco.trim()) {
+    alert('Endereço inválido.');
+    return;
+  }
+
+  const id = localStorage.getItem('token');
+
+  fetch(`http://localhost:3000/PerfilUsuario/endereco/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ endereco: novoEndereco.trim() })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.erro) {
+      alert(`Erro: ${data.erro}`);
+    } else {
+      alert(data.mensagem);
+      setPerfil(prev => ({ ...prev, endereco: novoEndereco.trim() }));
+    }
+  })
+  .catch(() => alert('Erro ao atualizar endereço.'));
+  }
+
+
   useEffect(() => {
-    localStorage.setItem('idUsuario', '23') // Apenas pra tesste
+    localStorage.setItem('token', '2') // Apenas pra tesste
     const buscarPerfil = async () => {
       // Pegando o id do usuário do localStorage
-      const id = localStorage.getItem('idUsuario')
+      const id = localStorage.getItem('token')
       if (!id) return console.log(`Id não existe ou o usúario não logou`) /*Depois mandar o usúario para página de login */
 
       try {
@@ -83,6 +121,7 @@ const Perfil = () => {
 
     buscarPerfil()
   }, [])
+  
 
   return (
     <div style={{
@@ -113,7 +152,7 @@ const Perfil = () => {
 
       <div style={{ marginBottom: '12px' }} className='d-flex justify-content-end' >
         <strong>Endereço:</strong> <span>{perfil.endereco}</span>
-        <button className="btn btn-sm ms-auto" style={{ backgroundColor: '#391942', color: 'white' }} > Alterar </button>
+        <button className="btn btn-sm ms-auto" style={{ backgroundColor: '#391942', color: 'white' }} onClick={alterarendereco} > Alterar </button>
       </div>
 
       <div style={{ marginBottom: '12px' }} className='d-flex justify-content-end'>
