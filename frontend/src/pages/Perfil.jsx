@@ -10,8 +10,8 @@ const Perfil = () => {
     endereco: ''
   })
   function Logout() {
-    localStorage.clear(); // ou remova apenas o que precisa
-    window.location.href = '/login'; // ou use navigate('/login') se usar React Router
+    localStorage.clear(); 
+    window.location.href = '/login';
   }
   
   function Apagarconta() {

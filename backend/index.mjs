@@ -2,6 +2,7 @@ import express from 'express';
 import mysql from 'mysql2';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import bcrypt from 'bcrypt';
 
 dotenv.config();
 
@@ -32,23 +33,31 @@ app.get('/', (req, res) => {
     res.send('Olá! Bem-vindo');
 });
 
-app.post('/CadastrarUsuario', (req, res) => {
+app.post('/CadastrarUsuario', async (req, res) => {
     const { nome, sobrenome, telefone, email, senha } = req.body;
+    
 
     if (!nome || !sobrenome || !telefone || !email || !senha) {
         return res.json({ mensagem: 'Todos os campos são obrigatórios.' });
     }
 
-    const sql = `INSERT INTO usuarios (Nome, Sobrenome, Telefone, Email, Senha)
-                 VALUES ('${nome}', '${sobrenome}', '${telefone}', '${email}', '${senha}')`;
+    try {
+    const nivelCript = 12
+    const senhaCriptografada = await bcrypt.hash(senha, nivelCript);
+    
 
-    conexao.query(sql, (err, resultado) => {
-        if (err) {
-            res.json({ mensagem: `Erro ao cadastrar usuário: ${err}` });
-        } else {
-            res.json({ mensagem: 'Usuário cadastrado com sucesso!', id: resultado.insertId });
-        }
+     const sql = `INSERT INTO usuarios (Nome, Sobrenome, Telefone, Email, Senha)
+                 VALUES ('${nome}', '${sobrenome}', '${telefone}', '${email}', '${senhaCriptografada}')`;
+
+    conexao.query(sql, [nome, sobrenome, telefone, email, senhaCriptografada], (err, resultado) => {
+      if (err) {
+        return res.json({ mensagem: `Erro ao cadastrar usuário: ${err}` });
+      }
+      res.json({ mensagem: 'Usuário cadastrado com sucesso!'});
     });
+  } catch (err) {
+    res.json({ mensagem: 'Erro ao criptografar a senha.', erro: err });
+  }
 });
 
 app.get('/PerfilUsuario/:id', (req,res) => {
