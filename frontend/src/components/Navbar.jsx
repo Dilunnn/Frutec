@@ -53,7 +53,7 @@ const Navbar = () => {
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ms-auto">
               <li className="nav-item">
-                <Link to="/inicio" className="nav-link">Início</Link>
+                <Link to="/" className="nav-link">Início</Link>
               </li>
               <li className="nav-item">
                 <Link to="/cardapio" className="nav-link">Cardápio</Link>
