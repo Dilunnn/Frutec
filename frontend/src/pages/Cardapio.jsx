@@ -72,7 +72,7 @@ const Cardapio = () => {
     console.log("complemento4", recheio);
   }
 
-    async function CadastrarPedido(nome, sobrenome, telefone, email, senha) {
+    async function CadastrarPedido(idUsuario, tamanhoCopo, recheioUM, recheioTres, frutaUM, frutaDois, complementoUM, complementoDois, complementoTres,complementoQuatro, complementoCinco ) {
         try {
             const response = await fetch('http://localhost:3000/CadastrarPedido', {
                 method: 'POST',
@@ -253,7 +253,7 @@ const Cardapio = () => {
 <br />
 
 <br /><br />
-      <input type="submit" value={'enviar'} />
+      <input type="submit" value={'enviar'} className='submit' />
     </form>
 
       <p>Tamanho selecionado: {tamanhoCopo}</p>
